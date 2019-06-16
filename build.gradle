@@ -1,0 +1,75 @@
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+group 'com.test'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+/**
+ * commons-fileupload   文件上传包
+ * joda-time    改变java时间格式包
+ * jstl js页面标签解析包
+ * jackson-databind js页面数据显示格式包如(xml,json,html)
+ * slf4j    日志包
+ */
+dependencies {
+    compile 'org.springframework:spring-core:5.1.7.RELEASE',
+            'org.springframework:spring-context:5.1.7.RELEASE',
+            'org.springframework:spring-web:5.1.7.RELEASE',
+            'org.springframework:spring-webmvc:5.1.7.RELEASE',
+            'commons-fileupload:commons-fileupload:1.4',
+            'joda-time:joda-time:2.10.2',
+            'javax.servlet:jstl:1.2',
+            'com.fasterxml.jackson.core:jackson-databind:2.9.9',
+            'org.slf4j:slf4j-api:1.7.10',
+            'org.slf4j:slf4j-log4j12:1.7.10'
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    testCompile 'junit:junit:4.11'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:2.0.0'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+if (!project.plugins.findPlugin(org.akhikhl.gretty.GrettyPlugin))
+    project.apply(plugin: org.akhikhl.gretty.GrettyPlugin)
+
+
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
+
+[compileJava, javadoc, compileTestJava]*.options*.encoding = "UTF-8"
+
+gretty{
+    httpEnabled = true
+    servletContainer = "tomcat8"
+    contextPath = "/mygradleweb"
+    host = "localhost"
+    httpPort = 8080
+    scanInterval = 1
+    fastReload = true
+    inplaceMode = "soft"
+    loggingLevel = "DEBUG"
+    consoleLogEnabled = true
+
+    debugPort = 6005
+    debugSuspend = true
+}

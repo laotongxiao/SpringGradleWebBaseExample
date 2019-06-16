@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+    <display-name>test web</display-name>
+    <!--Spring应用上下文,理解层次化的ApplicationContext-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/configs/spring/application*.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextCleanupListener</listener-class>
+    </listener>
+    
+    <!--DispatcherServlet,Spring MVC的核心,它可以为多个做不同服务-->
+    <servlet>
+        <servlet-name>SpringServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--DispatcherServlet对应的上下文配置,默认为/$servlet-name$-servlet.xml-->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/configs/spring/springxml.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SpringServlet</servlet-name>
+        <!--mvc-dispatcher拦截所有的请求-->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+
+</web-app>
